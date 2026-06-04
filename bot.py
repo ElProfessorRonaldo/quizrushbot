@@ -3,8 +3,6 @@ import random
 import html
 import aiohttp
 import os
-import threading
-from flask import Flask
 
 from deep_translator import GoogleTranslator
 from aiogram import Bot, Dispatcher, types
@@ -12,15 +10,7 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-TOKEN = os.getenv("BOT_TOKEN")
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "QuizRush Bot is running!"
-
-def run_web():
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 10000)))
+TOKEN = os.getenv"BOT_TOKEN"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -29,6 +19,9 @@ games = {}
 
 categories = {
     "random": None,
+    "science": 17,
+    "math": 19,
+    "logic": 9,
     "it": 18,
     "history": 23,
     "sports": 21,
@@ -92,6 +85,9 @@ async def get_random_question(category_id=None):
 def category_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="🎲 Random", callback_data="gamecat_random")],
+        [InlineKeyboardButton(text="🔬 Science / Nature", callback_data="gamecat_science")],
+        [InlineKeyboardButton(text="➗ Math", callback_data="gamecat_math")],
+        [InlineKeyboardButton(text="🧠 Logic", callback_data="gamecat_logic")],
         [InlineKeyboardButton(text="💻 IT / Computer", callback_data="gamecat_it")],
         [InlineKeyboardButton(text="📜 History", callback_data="gamecat_history")],
         [InlineKeyboardButton(text="⚽ Sports", callback_data="gamecat_sports")],
@@ -415,7 +411,6 @@ async def endgame(message: types.Message):
 
 
 async def main():
-    threading.Thread(target=run_web, daemon=True).start()
     print("Bot is running...")
     await dp.start_polling(bot)
 
