@@ -3,6 +3,8 @@ import random
 import html
 import aiohttp
 import os
+import threading
+from flask import Flask
 
 from deep_translator import GoogleTranslator
 from aiogram import Bot, Dispatcher, types
@@ -11,6 +13,14 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 TOKEN = os.getenv("BOT_TOKEN")
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "QuizRush Bot is running!"
+
+def run_web():
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 10000)))
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -411,6 +421,7 @@ async def endgame(message: types.Message):
 
 
 async def main():
+    threading.Thread(target=run_web, daemon=True).start()
     print("Bot is running...")
     await dp.start_polling(bot)
 
