@@ -191,7 +191,7 @@ async def send_question(chat_id):
         chat_id,
         f"❓ Question {game['current_number']}/{game['question_count']}\n\n"
         f"{q['question']}\n\n"
-        f"⏰ Time: 10 seconds",
+        f"⏰ Time: 20 seconds",
         reply_markup=keyboard
     )
 
@@ -199,7 +199,7 @@ async def send_question(chat_id):
 
 
 async def question_timer(chat_id, question_number):
-    await asyncio.sleep(10)
+    await asyncio.sleep(20)
 
     game = games.get(chat_id)
 
@@ -369,7 +369,7 @@ async def start_game_now(callback: types.CallbackQuery):
     await callback.message.answer(
         "🚀 Game started!\n\n"
         f"❓ Questions: {game['question_count']}\n"
-        "⏰ Each question: 10 seconds\n"
+        "⏰ Each question: 20 seconds\n"
         "✅ Every correct player gets +10 points"
     )
 
